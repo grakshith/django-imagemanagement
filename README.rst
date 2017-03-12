@@ -4,7 +4,8 @@ django-imagemanagement
 RESTful Image Management API 
 
 Quick start
----
+-----------
+
 
 1. Add "imagemanagement" to your INSTALLED_APPS setting like this::
 
