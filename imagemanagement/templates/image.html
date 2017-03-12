@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+        <h2><center>Uploaded Image</center></h2>
+            <div class="image">
+            <center>Filename : {{name}}</center>
+            <img src={{image}}>
+            </div>
+            <div id='compress-stats'></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    // $("#compress-stats").load('ajax/view/{{name}}',function(response,status,xhr){
+    //     console.log(response.message);
+    // });
+    $(document).ready(function(){
+        poll();
+    })
+    function poll() {
+       $.ajax({ url: "ajax/view/{{name}}", success: function(data) {
+            if(data.message==="0"){
+                console.log("Compression in progress");
+                $("#compress-stats").html("Compression in progress");    
+                setTimeout(poll,100);
+            }
+            else{
+                var reduction=(data.message.old_size-data.message.new_size)/data.message.old_size*100;
+                var os=data.message.old_size/1000;
+                var ns=data.message.new_size/1000;
+                $("#compress-stats").html('Old Size : '+os+'kb   New Size: '+ns+'kb   Reduction: '+reduction+'%');
+                console.log(data.message);
+            }
+            
+       }, dataType: "json"});
+    
+};
+</script>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .jumbotron{
+        width:100%;
+        height:100%;
+    }
+    .image{
+        width:100%;
+    }
+    .image img{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+</style>
+{% endblock %}

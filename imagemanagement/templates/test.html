@@ -1,0 +1,77 @@
+<script>
+	function del(){
+		accessKey=document.getElementById('accessKey').value;
+		filename=document.getElementById('filename').value;
+		//console.log(filename);
+		$.ajax({
+			url:"/image/update/"+filename,
+			type: 'DELETE',
+			data:JSON.stringify({
+				'accessKey':accessKey,
+			}),
+			success:function(result){
+				console.log(result);
+				$('#delete-status').html(result.message);
+			},
+			error:function(XMLHttpRequest,textStatus,error){
+				alert(error);
+			}
+
+		});
+	}
+	function patch(){
+		accessKey=document.getElementById('accessKey').value;
+		filename=document.getElementById('patchfilename').value;
+		var file=$('#uploadFile')[0].files[0];
+		console.log(file);
+		var reader=new FileReader();
+		//console.log("File reader created");
+		reader.onload=function(event){
+			var redata = event.target.result.replace("data:"+ file.type +";base64,", '');
+			//console.log(redata);
+			$.ajax({
+			url:"/image/update/"+filename,
+			type:'PATCH',
+			contentType:'application/json; charset=UTF-8',
+			data:JSON.stringify({
+				'accessKey':accessKey,
+				'image':redata,
+				}),
+			success:function(result){
+				console.log(result);
+				$('#patch-status').html(result.message);	
+			},
+			error:function(XMLHttpRequest,textStatus,error){
+				alert(error);
+			}
+		});
+		}
+		reader.readAsDataURL(file);	
+	}
+</script>
+
+
+{% csrf_token %}
+
+<script src = "/static/js/jquery.min.js"></script>
+<center>
+<p>Access Key</p>
+<textarea rows="1" cols="50" id="accessKey" placeholder="Enter AccessKey Here"></textarea></center>
+<p>
+<center>
+<p>DELETE</p>
+<textarea rows="1" cols="50" id="filename" placeholder="Enter Filename here"></textarea>
+<button type="button" onclick="del()">DELETE</button>
+<p><div id="delete-status"></div></p>
+</center>
+</p>
+<p>
+<center>
+<p>PATCH</p>
+	<textarea rows="1" cols="50" id=patchfilename placeholder="Enter Filename here"></textarea>
+	<input type="file" id="uploadFile">
+	<p><button type="button" onclick="patch()">PATCH</button></p>
+	<p><div id="patch-status"></div></p>
+	</center>
+</p>
+

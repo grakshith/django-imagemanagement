@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+        <h2>Upload Image</h2>
+            <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <p class="bs-component">
+                      <label class="required" for="id_image"><!--{{ form.image.label_tag }}--></label>
+                      {{ form.image }}
+                      {{ form.image.name }}
+                        {% if form.errors %}
+                            {% for error in form.image.errors %}
+                                <td>
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                </td>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </p>
+                <p class="bs-component">
+                        <input class="btn btn-success btn-sm" type="submit" value="Submit" />
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<script>
+	function del(){
+		filename=document.getElementById('filename').value;
+		//console.log(filename);
+		$.ajax({
+			url:"/image/"+filename,
+			type: 'DELETE',
+			success:function(result,status){
+				console.log(status);
+				//$('textarea#filename').val(result.message);
+			}
+
+		});
+	}
+</script>
+
+
+{% csrf_token %}
+
+<script src = "/static/js/jquery.min.js"></script>
+<textarea rows="1" cols="20" id="filename"></textarea>
+<button type="button" onclick="del()">DELETE</button>
+
