@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include imagemanagement/static *
+recursive-include imagemanagement/templates *
