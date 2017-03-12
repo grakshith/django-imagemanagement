@@ -1,4 +1,6 @@
-# django-imagemanagement
+=====
+django-imagemanagement
+=====
 RESTful Image Management API 
 
 Quick start
